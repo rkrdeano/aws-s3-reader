@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/service/s3"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/s3"
 )
 
 // ChunkSizePolicy is something that can tell how much data to fetch in single request for given S3 Object.
