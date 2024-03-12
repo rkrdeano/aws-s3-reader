@@ -133,7 +133,7 @@ func (s *S3ReadSeeker) reset() {
 	s.lastByte = 0
 }
 
-func (s *S3ReadSeeker) getSize() int {
+func (s *S3ReadSeeker) getSize() int64 {
 	if s.size > 0 {
 		return int(s.size)
 	}
