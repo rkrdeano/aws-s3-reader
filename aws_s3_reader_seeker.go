@@ -135,7 +135,7 @@ func (s *S3ReadSeeker) reset() {
 
 func (s *S3ReadSeeker) getSize() int64 {
 	if s.size > 0 {
-		return int(s.size)
+		return s.size
 	}
 	resp, err := s.s3client.HeadObject(context.Background(), &s3.HeadObjectInput{
 		Bucket: aws.String(s.bucket),
