@@ -3,7 +3,7 @@ module github.com/rkrdeano/aws-s3-reader
 go 1.22.0
 
 require (
-	github.com/aws/aws-sdk-go v1.50.23
+	github.com/aws/aws-sdk-go v1.50.36
 	github.com/aws/aws-sdk-go-v2 v1.25.3
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.51.4
 )

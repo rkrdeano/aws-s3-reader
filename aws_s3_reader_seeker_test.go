@@ -10,7 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
-	awss3reader "github.com/nikolaydubina/aws-s3-reader"
+	awss3reader "github.com/rkrdeano/aws-s3-reader"
 )
 
 func TestS3ReadSeeker(t *testing.T) {

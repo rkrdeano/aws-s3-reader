@@ -1,6 +1,7 @@
 package awss3reader
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"io"
@@ -29,7 +30,7 @@ func (s FixedChunkSizePolicy) ChunkSize() int { return s.Size }
 // It uses adaptive policy for chunk size fetching.
 // This is useful for iterating over very large S3 Objects.
 type S3ReadSeeker struct {
-	s3client        *s3.S3
+	s3client        *s3.Client
 	bucket          string
 	key             string
 	offset          int64 // in s3 object
@@ -41,7 +42,7 @@ type S3ReadSeeker struct {
 }
 
 func NewS3ReadSeeker(
-	s3client *s3.S3,
+	s3client *s3.Client,
 	bucket string,
 	key string,
 	chunkSizePolicy ChunkSizePolicy,
@@ -130,7 +131,7 @@ func (s *S3ReadSeeker) getSize() int {
 	if s.size > 0 {
 		return int(s.size)
 	}
-	resp, err := s.s3client.HeadObject(&s3.HeadObjectInput{
+	resp, err := s.s3client.HeadObject(context.Background(), &s3.HeadObjectInput{
 		Bucket: aws.String(s.bucket),
 		Key:    aws.String(s.key),
 	})
@@ -151,7 +152,7 @@ func (s *S3ReadSeeker) fetch(n int) error {
 
 	// note, that HTTP Byte Ranges is inclusive range of start-byte and end-byte
 	s.lastByte = s.offset + int64(n) - 1
-	resp, err := s.s3client.GetObject(&s3.GetObjectInput{
+	resp, err := s.s3client.GetObject(context.Background(), &s3.GetObjectInput{
 		Bucket: aws.String(s.bucket),
 		Key:    aws.String(s.key),
 		Range:  aws.String(fmt.Sprintf("bytes=%d-%d", s.offset, s.lastByte)),
