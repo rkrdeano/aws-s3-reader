@@ -1,4 +1,4 @@
-module github.com/nikolaydubina/aws-s3-reader
+module github.com/rkrdeano/aws-s3-reader
 
 go 1.22.0
 
