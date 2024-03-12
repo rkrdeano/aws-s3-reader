@@ -151,7 +151,7 @@ func (s *S3ReadSeeker) getSize() int64 {
 func (s *S3ReadSeeker) fetch(n int) error {
 	s.reset()
 
-	n = min(n, s.getSize()-s.offset)
+	n = min(n, int(s.getSize()-s.offset))
 	if n <= 0 {
 		return io.EOF
 	}
