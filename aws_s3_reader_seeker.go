@@ -145,7 +145,7 @@ func (s *S3ReadSeeker) getSize() int64 {
 		return 0
 	}
 	s.size = *resp.ContentLength
-	return int(s.size)
+	return s.size
 }
 
 func (s *S3ReadSeeker) fetch(n int) error {
