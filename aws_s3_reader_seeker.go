@@ -1,6 +1,7 @@
 package awss3reader
 
 import (
+	"bytes"
 	"context"
 	"errors"
 	"fmt"
@@ -39,6 +40,7 @@ type S3ReadSeeker struct {
 	chunkSizePolicy ChunkSizePolicy
 	r               io.ReadCloser // temporary holder for current reader
 	sink            []byte        // where to read bytes discarding data from readers during in-body seek
+    readBuffer      *bytes.Buffer 
 }
 
 func NewS3ReadSeeker(
@@ -52,6 +54,7 @@ func NewS3ReadSeeker(
 		bucket:          bucket,
 		key:             key,
 		chunkSizePolicy: chunkSizePolicy,
+		readBuffer:      new(bytes.Buffer),
 	}
 }
 
@@ -166,6 +169,9 @@ func (s *S3ReadSeeker) fetch(n int) error {
 	if err != nil {
 		return fmt.Errorf("cannot fetch bytes=%d-%d: %w", s.offset, s.lastByte, err)
 	}
-	s.r = resp.Body
+    s.readBuffer.Reset()
+	s.readBuffer.ReadFrom(resp.Body)
+	resp.Body.Close()
+	s.r = io.NopCloser(bytes.NewReader(s.readBuffer.Bytes()[:*resp.ContentLength]))
 	return nil
 }
